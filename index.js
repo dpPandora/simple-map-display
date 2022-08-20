@@ -8,7 +8,9 @@ var horizontal = `\u2500\u2500`;
 var topRight = `\u2510`;
 var vertical = `\u2502`;
 var bottomLeft = `\u2514`;
-var bottomRight = `\u2518`
+var bottomRight = `\u2518`;
+
+var playerCharacter = '\u26b2 ';
 //yeah i knoow this couldve been an array but like, i dont care
 //==============================
 
@@ -16,6 +18,7 @@ var bottomRight = `\u2518`
 //var mapWidth = 16,
 //    mapHeight = 16;
 //map info
+
 
 
 //== map object, ill turn this into a class later so i can have multiple maps ==
@@ -94,6 +97,10 @@ var level = {
         else console.log("Map borders created...");
 
         console.log("Printing finished map!");
+
+        console.log(formatedMap);
+
+        formatedMap[this.playerY + 1][this.playerX + 1] = playerCharacter;
 
         for (var placeY = 0; placeY < fullHeight; placeY++) {
             for (var placeX = 0; placeX < fullWidth; placeX++) {
