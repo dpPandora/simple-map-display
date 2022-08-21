@@ -46,22 +46,26 @@ var level = {
     moveUp() {
         if (this.playerY != 0) this.playerY--;
         else console.log("I can't move any higher");
+        this.printMap();
     },
     moveDown() {
-        if (this.playerY < this.mapHeight) this.playerY++;
+        if (this.playerY < this.mapHeight - 1) this.playerY++;
         else console.log("I can't move any lower");
+        this.printMap();
     },
     moveLeft() {
         if (this.playerX != 0) this.playerX--;
         else console.log("I can't go left");
+        this.printMap();
     },
     moveRight() {
-        if (this.playerX < this.mapWidth) this.playerX++;
-        else console.log("I can't go left");
+        if (this.playerX < this.mapWidth - 1) this.playerX++;
+        else console.log("I can't go right");
+        this.printMap();
     },
 //== map printing and maybe modification ==
     printMap() {
-        console.log("Printing function started...");
+        //console.debug("Printing function started...");
         var fullWidth = this.mapWidth + 2;
         var fullHeight = this.mapHeight + 2;
         var formatedMap = []; 
@@ -70,7 +74,7 @@ var level = {
 
         //adding borders to formatedMap, i hope this works because i have to finish the code to insert the map into the formatedMap so i cant print it yet... yikes
 
-        console.log("Creating map borders...");
+        //console.log("Creating map borders...");
 
         for (var placeY = 0; placeY < fullHeight; placeY++) {
             formatedMap.push([]);
@@ -93,12 +97,12 @@ var level = {
             }
         }
 
-        if (formatedMap.length === 0 || formatedMap[0].length === 0) console.log("Map border creation failed...");
-        else console.log("Map borders created...");
+        //if (formatedMap.length === 0 || formatedMap[0].length === 0) console.debug("Map border creation failed...");
+        //else console.debug("Map borders created...");
 
-        console.log("Printing finished map!");
+        //console.debug("Printing finished map!");
 
-        console.log(formatedMap);
+        //console.debug(formatedMap);
 
         formatedMap[this.playerY + 1][this.playerX + 1] = playerCharacter;
 
@@ -115,6 +119,30 @@ var level = {
 level.generateMap();
 level.printMap();
 
+var choice = "";
+
+while (choice != "quit") {
+    choice = readline.question("What would you like to do?\n>");
+    switch (choice) {
+        case "up":
+            level.moveUp();
+            break;
+        case "down":
+            level.moveDown();
+            break;
+        case "left":
+            level.moveLeft();
+            break;
+        case "right":
+            level.moveRight();
+            break;
+        case "quit":
+            break;
+        default: 
+            choice = "quit";
+            break;
+    }
+}
 //thank fuck everything works!!!
 
 //for (var placeY = 0; placeY < mapHeight; placeY++) {
