@@ -44,21 +44,25 @@ var level = {
     playerY: 0,
     playerX: 0,
     moveUp() {
+        console.clear();
         if (this.playerY != 0) this.playerY--;
         else console.log("I can't move any higher");
         this.printMap();
     },
     moveDown() {
+        console.clear();
         if (this.playerY < this.mapHeight - 1) this.playerY++;
         else console.log("I can't move any lower");
         this.printMap();
     },
     moveLeft() {
+        console.clear();
         if (this.playerX != 0) this.playerX--;
         else console.log("I can't go left");
         this.printMap();
     },
     moveRight() {
+        console.clear();
         if (this.playerX < this.mapWidth - 1) this.playerX++;
         else console.log("I can't go right");
         this.printMap();
