@@ -12,9 +12,12 @@ var bottomRight = `\u2518`;
 
 var wall = `\u2593\u2593`
 
-var playerCharacter = '\u26b2 ';
+var playerCharacter = '\u2697 ';
 //yeah i knoow this couldve been an array but like, i dont care
 //==============================
+
+let idOne = 65;
+let idTwo = 65;
 
 //const map = [];
 //var mapWidth = 16,
@@ -52,26 +55,30 @@ class Level {
     playerX;
     moveUp() {
         console.clear();
-        if (this.playerY != 0) this.playerY--;
+        if (this.playerY != 0 && this.map[this.playerY - 1][this.playerX] != wall) this.playerY--;
         else console.log("I can't move any higher");
+        console.log(`Moved to (${this.playerY}, ${this.playerX})`);
         this.printMap();
     };
     moveDown() {
         console.clear();
-        if (this.playerY < this.mapHeight - 1) this.playerY++;
+        if (this.playerY < this.mapHeight - 1 && this.map[this.playerY + 1][this.playerX] != wall) this.playerY++;
         else console.log("I can't move any lower");
+        console.log(`Moved to (${this.playerY}, ${this.playerX})`);
         this.printMap();
     };
     moveLeft() {
         console.clear();
-        if (this.playerX != 0) this.playerX--;
+        if (this.playerX != 0 && this.map[this.playerY][this.playerX - 1] != wall) this.playerX--;
         else console.log("I can't go left");
+        console.log(`Moved to (${this.playerY}, ${this.playerX})`);
         this.printMap();
     };
     moveRight() {
         console.clear();
-        if (this.playerX < this.mapWidth - 1) this.playerX++;
+        if (this.playerX < this.mapWidth - 1 && this.map[this.playerY][this.playerX + 1] != wall) this.playerX++;
         else console.log("I can't go right");
+        console.log(`Moved to (${this.playerY}, ${this.playerX})`);
         this.printMap();
     };
 //== map printing and maybe modification ==
@@ -128,7 +135,51 @@ class Level {
 }
 
 function generateMaze(map) {
+    let width = map.mapWidth;
+    let height = map.mapHeight;
 
+    console.log(`Started maze generation with y: ${height} and x: ${width}...`);
+
+    for (let y = 0; y < height; y++) {
+        console.log("y: " + y);
+        if (y % 2 === 0) {
+            for (let x = 1; x < width; x += 2) {
+                //console.log("x: " + x);
+                map.map[y][x] = wall;
+            }
+        }
+        else {
+            for (let x = 0; x < width; x++) {
+                map.map[y][x] = wall;
+            }
+        }
+    }
+
+    console.log("Step 1 finished...\nHere comes the hard part...")
+
+    let sets = {}
+
+    for (let y = 0; y < height; y += 2) {
+        for (let x = 0; x < width; x += 2) {
+
+        }
+    }
+}
+
+function returnId() {
+    let first = idOne;
+    let second = idTwo;
+    let id = String.fromCharCode(idOne, idTwo);
+
+    if (second  >= 90) {
+        idOne++;
+        idTwo = 65;
+    }
+    else {
+        idTwo++;
+    }
+
+    console.log(id);
 }
 
 function startGame(map) {
@@ -159,10 +210,15 @@ function startGame(map) {
     }
 }
 
-console.log(wall);
+//console.log(wall);
 
-//var mapOne = new Level(16, 20);
-//mapOne.generateMap();
+var mapOne = new Level(17, 21);
+mapOne.generateMap();
+//generateMaze(mapOne);
+
+for (let i = 0; i < 40; i++) {
+    returnId();
+}
 
 //startGame(mapOne);
 
