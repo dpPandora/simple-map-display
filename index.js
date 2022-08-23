@@ -141,7 +141,7 @@ function generateMaze(map) {
     console.log(`Started maze generation with y: ${height} and x: ${width}...`);
 
     for (let y = 0; y < height; y++) {
-        console.log("y: " + y);
+        //console.log("y: " + y);
         if (y % 2 === 0) {
             for (let x = 1; x < width; x += 2) {
                 //console.log("x: " + x);
@@ -157,12 +157,84 @@ function generateMaze(map) {
 
     console.log("Step 1 finished...\nHere comes the hard part...")
 
-    let sets = {}
+    let vol = width * height;
+    let sets = new Object();
+    let weights = [];
+    let choseId;
+    let weightR = 0;
+    let weightD = 0;
+    let usedWeights = [];
 
     for (let y = 0; y < height; y += 2) {
+        //console.log(usedWeights);
         for (let x = 0; x < width; x += 2) {
+            choseId = returnId();
+            map.map[y][x] = choseId;
+            sets[choseId] = [];
+            sets[choseId].push([y,x]); 
 
+            weightR = Math.floor(Math.random() * 100000000);
+            weightD = Math.floor(Math.random() * 100000000);
+
+            while (usedWeights.includes(weightR)) {
+                weightR = Math.floor(Math.random() * 80);
+                //console.log(usedWeights.includes(weightR))
+                //console.log(usedWeights);
+                //console.log(weightR + "R");
+            }
+//
+            while (usedWeights.includes(weightD)) {
+                weightD = Math.floor(Math.random() * 80);
+                //console.log(weightD + "D");
+            }
+
+            if (map.map[y][x + 2] != undefined) {
+                weights.push([y, x, y, x + 2, weightR, choseId]);
+                usedWeights.push(weightR);
+            }
+
+            try {
+                if (map.map[y + 2][x] != undefined) {
+                    weights.push([y, x, y + 2, x, weightD, choseId]);
+                    usedWeights.push(weightD);
+                }
+            }
+            catch {}
         }
+    }
+    weights.sort((a ,b) => a[4] - b[4]);
+    //console.log(weights);
+    let pointOne;
+    let pointTwo;
+    let diffY;
+    let diffx;
+
+    for (let path = 0; path < weights.length; path++) {
+        pointOne = map.map[weights[path][0]][weights[path][1]];
+        pointTwo = map.map[weights[path][2]][weights[path][3]];
+        //console.log(pointOne + pointTwo);
+        diffx = weights[path][3] - weights[path][1];
+        diffY = weights[path][2] - weights[path][0];
+        if (pointOne != pointTwo) {
+            //console.log(diffY + " " + diffx)
+            //console.log(map.map[weights[path][0]][weights[path][1]] + map.map[weights[path][2]][weights[path][3]]);
+            for (let i = 0; i < sets[pointTwo].length; i++) {
+                sets[pointOne].push(sets[pointTwo][i]);
+                map.map[sets[pointTwo][i][0]][sets[pointTwo][i][1]] = pointOne;
+            }
+
+            //console.log(sets);
+
+            //console.log(pointOne+ pointTwo + "\n" + sets[pointOne]);
+
+            let newY = weights[path][0] + diffY / 2;
+            let newX = weights[path][1] + diffx / 2;
+            
+            map.map[newY][newX] = empty;
+        }
+    }
+    for (let f = 0; f < sets[pointOne].length; f++) {
+        map.map[sets[pointOne][f][0]][sets[pointOne][f][1]] = empty;   
     }
 }
 
@@ -179,7 +251,7 @@ function returnId() {
         idTwo++;
     }
 
-    console.log(id);
+    return id;
 }
 
 function startGame(map) {
@@ -214,13 +286,11 @@ function startGame(map) {
 
 var mapOne = new Level(17, 21);
 mapOne.generateMap();
-//generateMaze(mapOne);
+generateMaze(mapOne);
 
-for (let i = 0; i < 40; i++) {
-    returnId();
-}
+mapOne.printMap();
 
-//startGame(mapOne);
+startGame(mapOne);
 
 //== map object, ill turn this into a class later so i can have multiple maps ==
 
